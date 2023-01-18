@@ -5,6 +5,13 @@ generator client {
   provider = "prisma-client-js"
 }
 
+// https://www.npmjs.com/package/prisma-erd-generator
+// npm i -D prisma-erd-generator @mermaid-js/mermaid-cli
+// npx prisma generate
+generator erd {
+  provider = "prisma-erd-generator"
+}
+
 datasource db {
   provider = "sqlite"
   url      = env("DATABASE_URL")
