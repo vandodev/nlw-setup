@@ -54,8 +54,22 @@ app.get('/day', async (request) => {
       },
     })
 
+    const day = await prisma.day.findFirst({
+      where: {
+        date: parsedDate.toDate(),
+      },
+      include: {
+        dayHabits: true,
+      }
+    })
+
+    const completedHabits = day?.dayHabits.map(dayHabit => {
+      return dayHabit.habit_id
+    })
+
+
     return {
-      possibleHabits
+      possibleHabits,completedHabits
     }
   })
 
