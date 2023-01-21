@@ -1,4 +1,5 @@
-import { View, StatusBar } from 'react-native';
+import './src/lib/dayjs';
+import {StatusBar } from 'react-native';
 import  {Loading}  from './src/components/Loading';
 import { 
   useFonts,
