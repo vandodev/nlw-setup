@@ -1,6 +1,9 @@
 import { Text, TextInput, View, ScrollView } from "react-native";
 import { BackButton } from "../components/BackButton";
 import colors from "tailwindcss/colors";
+import { Checkbox } from "../components/Checkbox";
+
+const availableWeekDays = ['Domingo', 'Segunda-feira', 'Terça-feira', 'Quarta-feira', 'Quinta-feira', 'Sexta-feira', 'Sábado'];
 
 export function New() {
     return(
@@ -24,6 +27,20 @@ export function New() {
                 placeholder="Exercícios, dormir bem, etc..."
                 placeholderTextColor={colors.zinc[400]}
                />
+
+              <Text className="font-semibold mt-4 mb-3 text-white text-base">
+                Qual a recorrência?
+             </Text>
+
+            {
+            availableWeekDays.map((weekDay, index) => (
+                <Checkbox
+                  key={weekDay}
+                  title={weekDay}
+                  // checked
+                />
+            ))
+            }
 
          </ScrollView>
         </View>
