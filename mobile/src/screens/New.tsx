@@ -1,7 +1,9 @@
 import { useState } from "react";
-import { Text, TextInput, View, ScrollView } from "react-native";
-import { BackButton } from "../components/BackButton";
+import { Text, TextInput,TouchableOpacity, View, ScrollView } from "react-native";
 import colors from "tailwindcss/colors";
+import { Feather } from '@expo/vector-icons'
+
+import { BackButton } from "../components/BackButton";
 import { Checkbox } from "../components/Checkbox";
 
 const availableWeekDays = ['Domingo', 'Segunda-feira', 'Terça-feira', 'Quarta-feira', 'Quinta-feira', 'Sexta-feira', 'Sábado'];
@@ -52,7 +54,22 @@ export function New() {
                   onPress={() => handleToggleWeekDay(index)}
                 />
             ))
-            }
+          }
+
+        <TouchableOpacity
+          className="w-full h-14 flex-row items-center justify-center bg-green-600 rounded-md mt-6"
+          activeOpacity={0.7}
+        >
+          <Feather 
+           name="check"
+           size={20}
+           color={colors.white}
+          />
+
+          <Text className="font-semibold text-base text-white ml-2">
+            Confirmar
+          </Text>
+        </TouchableOpacity>
 
          </ScrollView>
         </View>
