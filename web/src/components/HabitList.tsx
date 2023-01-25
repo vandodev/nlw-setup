@@ -19,6 +19,7 @@ interface HabitsInfo {
 
 export function HabitList({ date }: HabitLisProps) {
   const [habitsInfo, setHabitsInfo] = useState<HabitsInfo>();
+
   useEffect(() => {
     api
       .get("day", {
@@ -32,6 +33,30 @@ export function HabitList({ date }: HabitLisProps) {
       });
   }, []);
 
+  async function handleToggleHabit(habitId: string) {
+    const isHabitAlreadyCompleted =
+      habitsInfo!.completedHabits.includes(habitId);
+
+    await api.patch(`/habits/${habitId}/toggle`);
+
+    let completedHabits: string[] = [];
+
+    if (isHabitAlreadyCompleted) {
+      //Remove da lista
+      completedHabits = habitsInfo!.completedHabits.filter(
+        (id) => id !== habitId
+      );
+    } else {
+      //Adiciona a lista
+      completedHabits = [...habitsInfo!.completedHabits, habitId];
+    }
+
+    setHabitsInfo({
+      possibleHabits: habitsInfo!.possibleHabits,
+      completedHabits,
+    });
+  }
+
   const isDateInPast = dayjs(date).endOf("day").isBefore(new Date());
 
   return (
@@ -40,8 +65,9 @@ export function HabitList({ date }: HabitLisProps) {
         return (
           <Checkbox.Root
             key={habit.id}
+            onCheckedChange={() => handleToggleHabit(habit.id)}
             className="flex items-center gap-3 group"
-            defaultChecked={habitsInfo.completedHabits.includes(habit.id)}
+            checked={habitsInfo.completedHabits.includes(habit.id)}
             disabled={isDateInPast}
           >
             <div className="h-8 w-8 rounded-lg flex items-center justify-center bg-zinc-900 border-2 border-zinc-800 group-data-[state=checked]:bg-green-500 group-data-[state=checked]:border-green-50">
