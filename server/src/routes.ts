@@ -65,7 +65,7 @@ app.get('/day', async (request) => {
 
     const completedHabits = day?.dayHabits.map(dayHabit => {
       return dayHabit.habit_id
-    })
+    }) ?? []
 
 
     return {
