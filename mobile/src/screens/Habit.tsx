@@ -2,6 +2,8 @@ import { View, Text, ScrollView, Alert } from "react-native";
 import { useEffect, useState } from "react";
 import { useRoute } from "@react-navigation/native";
 import dayjs from "dayjs";
+import clsx from "clsx";
+
 import { api } from "../lib/axios";
 
 import { BackButton } from "../components/BackButton";
@@ -102,7 +104,11 @@ export function Habit() {
 
         <ProgressBar progress={habitsProgress} />
 
-        <View className="mt-6">
+        <View
+          className={clsx("mt-6", {
+            ["opacity-50"]: isDateInPast,
+          })}
+        >
           {dayInfo?.possibleHabits ? (
             dayInfo.possibleHabits?.map((habit) => (
               <Checkbox
