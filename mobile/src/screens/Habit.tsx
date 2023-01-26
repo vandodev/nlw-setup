@@ -49,6 +49,23 @@ export function Habit() {
     }
   }
 
+  async function handleToggleHabits(habitId: string) {
+    try {
+      await api.patch(`/habits/${habitId}/toggle`);
+
+      if (completedHabits?.includes(habitId)) {
+        setCompletedHabits((prevState) =>
+          prevState.filter((habit) => habit !== habitId)
+        );
+      } else {
+        setCompletedHabits((prevState) => [...prevState, habitId]);
+      }
+    } catch (error) {
+      console.log(error);
+      Alert.alert("Ops", "Não foi possível atualizar o status do hábito.");
+    }
+  }
+
   useEffect(() => {
     fetchHabits();
   }, []);
@@ -82,6 +99,7 @@ export function Habit() {
                 key={habit.id}
                 title={habit.title}
                 checked={completedHabits?.includes(habit.id)}
+                onPress={() => handleToggleHabits(habit.id)}
               />
             ))}
         </View>
