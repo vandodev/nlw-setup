@@ -33,6 +33,7 @@ export function Habit() {
   const parsedDate = dayjs(date);
   const dayOfWeek = parsedDate.format("dddd");
   const dayAndMonth = parsedDate.format("DD/MM");
+  const isDateInPast = parsedDate.endOf("day").isBefore(new Date());
 
   const habitsProgress = dayInfo?.possibleHabits?.length
     ? generateProgressPercentage(
@@ -45,7 +46,7 @@ export function Habit() {
     try {
       setLoading(true);
       const response = await api.get("/day", { params: { date } });
-      // setDayInfo(response.data);
+      setDayInfo(response.data);
       setCompletedHabits(response.data.completedHabits ?? []);
     } catch (error) {
       console.log(error);
@@ -109,12 +110,19 @@ export function Habit() {
                 title={habit.title}
                 checked={completedHabits?.includes(habit.id)}
                 onPress={() => handleToggleHabits(habit.id)}
+                disabled={isDateInPast}
               />
             ))
           ) : (
             <HabitsEmpty />
           )}
         </View>
+
+        {isDateInPast && (
+          <Text className="text-white mt-10 text-center">
+            Você não pode editar hábitos de uma data passada.
+          </Text>
+        )}
       </ScrollView>
     </View>
   );
