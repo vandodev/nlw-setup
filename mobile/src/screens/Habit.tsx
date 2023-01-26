@@ -13,8 +13,18 @@ interface Params {
   date: string;
 }
 
+interface DayInfoProps {
+  completedHabits: string[];
+  possibleHabits: {
+    id: string;
+    title: string;
+  }[];
+}
+
 export function Habit() {
+  const [completedHabits, setCompletedHabits] = useState<string[]>([]);
   const [loading, setLoading] = useState(true);
+  const [dayInfo, setDayInfo] = useState<DayInfoProps | null>(null);
   const route = useRoute();
   const { date } = route.params as Params;
 
@@ -26,7 +36,8 @@ export function Habit() {
     try {
       setLoading(true);
       const response = await api.get("/day", { params: { date } });
-      console.log(response.data);
+      setDayInfo(response.data);
+      setCompletedHabits(response.data.completedHabits ?? []);
     } catch (error) {
       console.log(error);
       Alert.alert(
@@ -65,9 +76,14 @@ export function Habit() {
         <ProgressBar progress={30} />
 
         <View className="mt-6">
-          <Checkbox title="Beber 2L de água" checked={false} />
-
-          <Checkbox title="Caminhar" checked />
+          {dayInfo?.possibleHabits &&
+            dayInfo.possibleHabits?.map((habit) => (
+              <Checkbox
+                key={habit.id}
+                title={habit.title}
+                checked={completedHabits?.includes(habit.id)}
+              />
+            ))}
         </View>
       </ScrollView>
     </View>
