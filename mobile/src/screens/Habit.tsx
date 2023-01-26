@@ -8,6 +8,7 @@ import { BackButton } from "../components/BackButton";
 import { ProgressBar } from "../components/Progress.Bar";
 import { Checkbox } from "../components/Checkbox";
 import { Loading } from "../components/Loading";
+import { generateProgressPercentage } from "../utils/generate-progress-percentage";
 
 interface Params {
   date: string;
@@ -31,6 +32,13 @@ export function Habit() {
   const parsedDate = dayjs(date);
   const dayOfWeek = parsedDate.format("dddd");
   const dayAndMonth = parsedDate.format("DD/MM");
+
+  const habitsProgress = dayInfo?.possibleHabits?.length
+    ? generateProgressPercentage(
+        dayInfo.possibleHabits.length,
+        completedHabits.length
+      )
+    : 0;
 
   async function fetchHabits() {
     try {
@@ -90,7 +98,7 @@ export function Habit() {
           {dayAndMonth}
         </Text>
 
-        <ProgressBar progress={30} />
+        <ProgressBar progress={habitsProgress} />
 
         <View className="mt-6">
           {dayInfo?.possibleHabits &&
